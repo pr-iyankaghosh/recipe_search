@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-const Popular = () => {
+const Popular = ({ filters }) => {
   const [popular, setPopular] = useState([]);
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -25,13 +26,58 @@ const Popular = () => {
     getPopular();
   }, []);
 
+  // Apply filters when they change or when recipes change
+  useEffect(() => {
+    if (!popular.length) return;
+    
+    // If no filters are active, show all recipes
+    if (!Object.values(filters || {}).some(Boolean)) {
+      setFilteredRecipes(popular);
+      return;
+    }
+    
+    // Apply filters
+    const filtered = popular.filter(recipe => {
+      // High Protein filter (assuming recipes with > 15g protein per serving are high protein)
+      if (filters?.highProtein && (!recipe.nutrition || recipe.nutrition.nutrients.find(n => n.name === "Protein")?.amount < 15)) {
+        return false;
+      }
+      
+      // Gluten Free filter
+      if (filters?.glutenFree && !recipe.glutenFree) {
+        return false;
+      }
+      
+      // Low Carb filter (assuming recipes with < 20g carbs per serving are low carb)
+      if (filters?.lowCarb && (!recipe.nutrition || recipe.nutrition.nutrients.find(n => n.name === "Carbohydrates")?.amount >= 20)) {
+        return false;
+      }
+      
+      // Vegetarian filter
+      if (filters?.vegetarian && !recipe.vegetarian) {
+        return false;
+      }
+      
+      // Non-Vegetarian filter
+      if (filters?.nonVegetarian && recipe.vegetarian) {
+        return false;
+      }
+      
+      return true;
+    });
+    
+    setFilteredRecipes(filtered);
+  }, [filters, popular]);
+
   const getPopular = async () => {
     setIsLoading(true);
     const check = localStorage.getItem("popular");
 
     try {
       if (check) {
-        setPopular(JSON.parse(check));
+        const parsedData = JSON.parse(check);
+        setPopular(parsedData);
+        setFilteredRecipes(parsedData);
       } else {
         const api = await fetch(
           `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`
@@ -39,6 +85,7 @@ const Popular = () => {
         const data = await api.json();
         console.log(data);
         setPopular(data.recipes);
+        setFilteredRecipes(data.recipes);
         localStorage.setItem("popular", JSON.stringify(data.recipes));
       }
     } catch (error) {
@@ -83,7 +130,11 @@ const Popular = () => {
           Popular Picks
           <TitleHighlight />
         </SectionTitle>
-        <SectionDescription>Discover our most loved recipes</SectionDescription>
+        <SectionDescription>
+          {Object.values(filters || {}).some(Boolean) 
+            ? "Filtered recipes based on your preferences" 
+            : "Discover our most loved recipes"}
+        </SectionDescription>
       </SectionHeader>
 
       {isLoading ? (
@@ -100,6 +151,16 @@ const Popular = () => {
           />
           <LoadingText>Finding the best recipes for you...</LoadingText>
         </LoadingContainer>
+      ) : filteredRecipes.length === 0 ? (
+        <NoResultsContainer
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <NoResultsIcon>🍽️</NoResultsIcon>
+          <NoResultsText>No recipes match your current filters</NoResultsText>
+          <NoResultsSubtext>Try adjusting your dietary preferences</NoResultsSubtext>
+        </NoResultsContainer>
       ) : (
         <Splide
           options={{
@@ -121,7 +182,7 @@ const Popular = () => {
             },
           }}
         >
-          {popular.map((recipe, index) => {
+          {filteredRecipes.map((recipe, index) => {
             return (
               <SplideSlide key={recipe.id}>
                 <Card 
@@ -143,6 +204,9 @@ const Popular = () => {
                       )}
                       {recipe.vegetarian && !recipe.vegan && (
                         <RecipeTag>Vegetarian</RecipeTag>
+                      )}
+                      {recipe.glutenFree && (
+                        <RecipeTag className="gluten-free">Gluten Free</RecipeTag>
                       )}
                       <RecipeTime>
                         <TimeIcon />
@@ -231,6 +295,32 @@ const LoadingText = styled.p`
   font-size: 1rem;
 `;
 
+const NoResultsContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  text-align: center;
+`;
+
+const NoResultsIcon = styled.div`
+  font-size: 3rem;
+  margin-bottom: 1rem;
+`;
+
+const NoResultsText = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: ${props => props.theme.isDarkMode ? '#f5f5f5' : '#333'};
+  margin-bottom: 0.5rem;
+`;
+
+const NoResultsSubtext = styled.p`
+  color: ${props => props.theme.isDarkMode ? '#ccc' : '#777'};
+  font-size: 1rem;
+`;
+
 const Card = styled(motion.div)`
   overflow: hidden;
   border-radius: 15px;
@@ -274,6 +364,10 @@ const RecipeTag = styled.span`
   font-size: 0.8rem;
   font-weight: 500;
   z-index: 2;
+  
+  &.gluten-free {
+    top: 50px;
+  }
 `;
 
 const RecipeTime = styled.div`

@@ -2,8 +2,6 @@ import "./app.css";
 import Home from "./pages/Home";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Cuisines from "./pages/Cuisines";
-import Category from "./components/Category";
-import Search from "./components/Search";
 import SingleRecipe from "./pages/SingleRecipe";
 import RecipeDetails from "./pages/RecipeDetails";
 import Navbar from "./components/Navbar";
@@ -31,8 +29,6 @@ function AppContent() {
     <StyledThemeProvider theme={{ isDarkMode }}>
       <Navbar />
       <main>
-        <Search />
-        <Category />
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />}></Route>

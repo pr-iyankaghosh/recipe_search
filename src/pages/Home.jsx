@@ -1,41 +1,75 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import GlutenFree from "../components/GlutenFree";
 import Lowcarb from "../components/Lowcarb";
 import Popular from "../components/Popular";
 import Veggie from "../components/Veggie";
+import DietaryFilter from "../components/DietaryFilter";
+import Category from "../components/Category";
+import Search from "../components/Search";
+import WorldDishes from "../components/WorldDishes";
+import DessertDishes from "../components/DessertDishes";
+import FeaturedDishes from "../components/FeaturedDishes";
+import QuickDishes from "../components/QuickDishes";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.3,
-      delayChildren: 0.2
-    }
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.5
-    }
-  }
-};
-
-const item = {
-  hidden: { opacity: 0, y: 50 },
-  show: { 
-    opacity: 1, 
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.6, 0.05, -0.01, 0.9]
-    }
-  }
-};
-
 const Home = () => {
+  const [activeFilters, setActiveFilters] = useState({
+    glutenFree: false,
+    lowCarb: false,
+    highProtein: false,
+    vegetarian: false,
+    nonVegetarian: false,
+  });
+
+  const handleFilterChange = useCallback((filters) => {
+    setActiveFilters(filters);
+  }, []);
+
+  // Determine which components to show based on filters
+  const showPopular = !Object.values(activeFilters).some(Boolean) || 
+    (activeFilters.highProtein && !activeFilters.glutenFree && 
+     !activeFilters.lowCarb && !activeFilters.vegetarian && 
+     !activeFilters.nonVegetarian);
+  
+  const showVeggie = !Object.values(activeFilters).some(Boolean) || 
+    activeFilters.vegetarian;
+  
+  const showLowcarb = !Object.values(activeFilters).some(Boolean) || 
+    activeFilters.lowCarb;
+  
+  const showGlutenFree = !Object.values(activeFilters).some(Boolean) || 
+    activeFilters.glutenFree;
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+        delayChildren: 0.2
+      }
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 50 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.6, 0.05, -0.01, 0.9]
+      }
+    }
+  };
+
   return (
     <HomeContainer
       variants={container}
@@ -43,18 +77,50 @@ const Home = () => {
       animate="show"
       exit="exit"
     >
+      <Search />
+      <Category />
+      <DietaryFilter onFilterChange={handleFilterChange} />
+      
       <motion.div variants={item}>
-        <Popular />
+        <FeaturedDishes />
       </motion.div>
+      
       <motion.div variants={item}>
-        <Veggie />
+        <QuickDishes />
       </motion.div>
+      
       <motion.div variants={item}>
-        <Lowcarb />
+        <WorldDishes />
       </motion.div>
+      
       <motion.div variants={item}>
-        <GlutenFree />
+        <DessertDishes />
       </motion.div>
+      
+      {showPopular && (
+        <motion.div variants={item}>
+          <Popular filters={activeFilters} />
+        </motion.div>
+      )}
+      
+      {showVeggie && (
+        <motion.div variants={item}>
+          <Veggie filters={activeFilters} />
+        </motion.div>
+      )}
+      
+      {showLowcarb && (
+        <motion.div variants={item}>
+          <Lowcarb filters={activeFilters} />
+        </motion.div>
+      )}
+      
+      {showGlutenFree && (
+        <motion.div variants={item}>
+          <GlutenFree filters={activeFilters} />
+        </motion.div>
+      )}
+      
       <BackgroundBlur />
       <BackgroundCircle1 />
       <BackgroundCircle2 />

@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-const GlutenFree = () => {
+const GlutenFree = ({ filters }) => {
   const [glutenFree, setGlutenFree] = useState([]);
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -25,13 +26,53 @@ const GlutenFree = () => {
     getGlutenFree();
   }, []);
 
+  // Apply filters when they change or when recipes change
+  useEffect(() => {
+    if (!glutenFree.length) return;
+    
+    // If no filters are active, show all recipes
+    if (!Object.values(filters || {}).some(Boolean)) {
+      setFilteredRecipes(glutenFree);
+      return;
+    }
+    
+    // Apply filters - for GlutenFree component, we already know all recipes are gluten-free
+    const filtered = glutenFree.filter(recipe => {
+      // High Protein filter (assuming recipes with > 15g protein per serving are high protein)
+      if (filters?.highProtein && (!recipe.nutrition || recipe.nutrition.nutrients.find(n => n.name === "Protein")?.amount < 15)) {
+        return false;
+      }
+      
+      // Low Carb filter (assuming recipes with < 20g carbs per serving are low carb)
+      if (filters?.lowCarb && (!recipe.nutrition || recipe.nutrition.nutrients.find(n => n.name === "Carbohydrates")?.amount >= 20)) {
+        return false;
+      }
+      
+      // Vegetarian filter
+      if (filters?.vegetarian && !recipe.vegetarian) {
+        return false;
+      }
+      
+      // Non-Vegetarian filter
+      if (filters?.nonVegetarian && recipe.vegetarian) {
+        return false;
+      }
+      
+      return true;
+    });
+    
+    setFilteredRecipes(filtered);
+  }, [filters, glutenFree]);
+
   const getGlutenFree = async () => {
     setIsLoading(true);
     const check = localStorage.getItem("glutenFree");
 
     try {
       if (check) {
-        setGlutenFree(JSON.parse(check));
+        const parsedData = JSON.parse(check);
+        setGlutenFree(parsedData);
+        setFilteredRecipes(parsedData);
       } else {
         const api = await fetch(
           `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=gluten-free`
@@ -39,6 +80,7 @@ const GlutenFree = () => {
         const data = await api.json();
         console.log(data);
         setGlutenFree(data.recipes);
+        setFilteredRecipes(data.recipes);
         localStorage.setItem("glutenFree", JSON.stringify(data.recipes));
       }
     } catch (error) {
@@ -83,7 +125,11 @@ const GlutenFree = () => {
           Gluten-Free Delights
           <TitleHighlight />
         </SectionTitle>
-        <SectionDescription>Tasty recipes without gluten</SectionDescription>
+        <SectionDescription>
+          {Object.values(filters || {}).some(Boolean) 
+            ? "Filtered gluten-free recipes based on your preferences" 
+            : "Tasty recipes without gluten"}
+        </SectionDescription>
       </SectionHeader>
 
       {isLoading ? (
@@ -100,6 +146,16 @@ const GlutenFree = () => {
           />
           <LoadingText>Finding gluten-free recipes...</LoadingText>
         </LoadingContainer>
+      ) : filteredRecipes.length === 0 ? (
+        <NoResultsContainer
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <NoResultsIcon>🍞</NoResultsIcon>
+          <NoResultsText>No gluten-free recipes match your current filters</NoResultsText>
+          <NoResultsSubtext>Try adjusting your dietary preferences</NoResultsSubtext>
+        </NoResultsContainer>
       ) : (
         <Splide
           options={{
@@ -121,7 +177,7 @@ const GlutenFree = () => {
             },
           }}
         >
-          {glutenFree.map((recipe, index) => {
+          {filteredRecipes.map((recipe, index) => {
             return (
               <SplideSlide key={recipe.id}>
                 <Card 
@@ -139,6 +195,12 @@ const GlutenFree = () => {
                       <img src={recipe.image} alt={recipe.title} />
                       <Gradient />
                       <RecipeTag>Gluten Free</RecipeTag>
+                      {recipe.vegetarian && (
+                        <RecipeTag className="vegetarian">Vegetarian</RecipeTag>
+                      )}
+                      {recipe.lowCarb && (
+                        <RecipeTag className="low-carb">Low Carb</RecipeTag>
+                      )}
                       <RecipeTime>
                         <TimeIcon />
                         <span>{recipe.readyInMinutes} min</span>
@@ -226,6 +288,32 @@ const LoadingText = styled.p`
   font-size: 1rem;
 `;
 
+const NoResultsContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  text-align: center;
+`;
+
+const NoResultsIcon = styled.div`
+  font-size: 3rem;
+  margin-bottom: 1rem;
+`;
+
+const NoResultsText = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: ${props => props.theme.isDarkMode ? '#f5f5f5' : '#333'};
+  margin-bottom: 0.5rem;
+`;
+
+const NoResultsSubtext = styled.p`
+  color: ${props => props.theme.isDarkMode ? '#ccc' : '#777'};
+  font-size: 1rem;
+`;
+
 const Card = styled(motion.div)`
   overflow: hidden;
   border-radius: 15px;
@@ -269,6 +357,14 @@ const RecipeTag = styled.span`
   font-size: 0.8rem;
   font-weight: 500;
   z-index: 2;
+  
+  &.vegetarian {
+    top: 50px;
+  }
+  
+  &.low-carb {
+    top: 90px;
+  }
 `;
 
 const RecipeTime = styled.div`
