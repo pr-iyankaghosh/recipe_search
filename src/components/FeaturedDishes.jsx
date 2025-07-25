@@ -44,15 +44,16 @@ const FeaturedDishes = () => {
     }
   ];
 
+  // Animation variants
   const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
       opacity: 1,
       y: 0,
       transition: {
         delay: i * 0.1,
         duration: 0.5,
-        ease: [0.6, 0.05, -0.01, 0.9]
+        ease: "easeOut"
       }
     })
   };

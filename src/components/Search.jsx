@@ -142,11 +142,21 @@ const FormStyle = styled(motion.form)`
   transition: all 0.3s ease;
   position: relative;
   
+  @media (max-width: 768px) {
+    flex-direction: column;
+    border-radius: 25px;
+    padding: 0.2rem 0.2rem 0.8rem 0.2rem;
+  }
+  
   div {
     flex: 1;
     position: relative;
     display: flex;
     align-items: center;
+    
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
   
   input {
@@ -160,8 +170,17 @@ const FormStyle = styled(motion.form)`
     border-radius: 50px;
     transition: color 0.3s ease;
     
+    @media (max-width: 425px) {
+      padding: 0.9rem 2.8rem;
+      font-size: 0.9rem;
+    }
+    
     &::placeholder {
       color: ${props => props.theme.isDarkMode ? '#999' : '#aaa'};
+      
+      @media (max-width: 425px) {
+        font-size: 0.9rem;
+      }
     }
   }
 `;
@@ -175,6 +194,11 @@ const SearchIcon = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: center;
+  
+  @media (max-width: 425px) {
+    left: 0.8rem;
+    font-size: 0.9rem;
+  }
 `;
 
 const ClearButton = styled(motion.button)`
@@ -190,6 +214,11 @@ const ClearButton = styled(motion.button)`
   justify-content: center;
   padding: 0.3rem;
   line-height: 1;
+  
+  @media (max-width: 425px) {
+    right: 0.8rem;
+    font-size: 1.3rem;
+  }
 `;
 
 const SearchButton = styled(motion.button)`
@@ -204,6 +233,18 @@ const SearchButton = styled(motion.button)`
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  
+  @media (max-width: 768px) {
+    margin-top: 0.8rem;
+    width: 80%;
+    align-self: center;
+  }
+  
+  @media (max-width: 425px) {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+    width: 90%;
+  }
   
   &:disabled {
     opacity: 0.7;
@@ -234,10 +275,20 @@ const SearchSuggestions = styled(motion.div)`
   justify-content: center;
   align-items: center;
   
+  @media (max-width: 425px) {
+    margin-top: 0.8rem;
+    gap: 0.4rem;
+  }
+  
   span {
     color: ${props => props.theme.isDarkMode ? '#aaa' : '#777'};
     font-size: 0.9rem;
     margin-right: 0.5rem;
+    
+    @media (max-width: 425px) {
+      font-size: 0.8rem;
+      margin-right: 0.3rem;
+    }
   }
 `;
 
@@ -250,6 +301,11 @@ const SuggestionTag = styled(motion.button)`
   color: ${props => props.theme.isDarkMode ? '#ddd' : '#555'};
   cursor: pointer;
   transition: all 0.3s ease;
+  
+  @media (max-width: 425px) {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+  }
   
   &:hover {
     background: ${props => props.theme.isDarkMode ? '#4d4d4d' : '#FFECB3'};

@@ -222,6 +222,10 @@ const DetailContainer = styled.div`
   margin: 0 auto;
   padding: 0 1rem;
   min-height: 60vh;
+  
+  @media (max-width: 425px) {
+    padding: 0 0.5rem;
+  }
 `;
 
 const LoadingContainer = styled.div`
@@ -239,12 +243,22 @@ const LoadingSpinner = styled(motion.div)`
   border-left-color: #FFB800;
   border-radius: 50%;
   margin-bottom: 1rem;
+  
+  @media (max-width: 425px) {
+    width: 50px;
+    height: 50px;
+    border-width: 3px;
+  }
 `;
 
 const LoadingText = styled(motion.p)`
   font-size: 1.2rem;
   color: #FFB800;
   font-weight: 500;
+  
+  @media (max-width: 425px) {
+    font-size: 1rem;
+  }
 `;
 
 const DetailWrapper = styled(motion.div)`
@@ -255,18 +269,45 @@ const DetailWrapper = styled(motion.div)`
   
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  @media (max-width: 768px) {
+    margin: 3rem 0;
+    gap: 2.5rem;
+  }
+  
+  @media (max-width: 425px) {
+    margin: 2rem 0;
+    gap: 2rem;
   }
   
   .image-container {
     h2 {
       margin-bottom: 1rem;
       font-weight: 700;
+      
+      @media (max-width: 768px) {
+        font-size: 1.8rem;
+      }
+      
+      @media (max-width: 425px) {
+        font-size: 1.6rem;
+      }
     }
   }
 `;
 
 const TitleContainer = styled.div`
   margin-bottom: 2rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (max-width: 425px) {
+    margin-bottom: 1.2rem;
+  }
   
   h2 {
     background: linear-gradient(to right, #FFB800, #FFA000);
@@ -282,6 +323,11 @@ const DietTags = styled.div`
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 1rem;
+  
+  @media (max-width: 425px) {
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+  }
 `;
 
 const DietTag = styled.span`
@@ -291,6 +337,12 @@ const DietTag = styled.span`
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
+  
+  @media (max-width: 425px) {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    border-radius: 15px;
+  }
 `;
 
 const ImageWrapper = styled(motion.div)`
@@ -298,6 +350,10 @@ const ImageWrapper = styled(motion.div)`
   overflow: hidden;
   box-shadow: 0 10px 30px ${props => props.theme.isDarkMode ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'};
   position: relative;
+  
+  @media (max-width: 425px) {
+    border-radius: 10px;
+  }
   
   img {
     width: 100%;
@@ -326,6 +382,17 @@ const RecipeInfo = styled.div`
   box-shadow: 0 4px 15px ${props => props.theme.isDarkMode ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.05)'};
   transition: all 0.3s ease;
   border-left: 4px solid #FFB800;
+  
+  @media (max-width: 768px) {
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+  }
+  
+  @media (max-width: 425px) {
+    padding: 1rem;
+    margin-top: 1.2rem;
+    border-left-width: 3px;
+  }
 `;
 
 const InfoItem = styled(motion.div)`
@@ -338,6 +405,11 @@ const InfoItem = styled(motion.div)`
     color: ${props => props.theme.isDarkMode ? '#aaa' : '#777'};
     margin-bottom: 0.5rem;
     transition: color 0.3s ease;
+    
+    @media (max-width: 425px) {
+      font-size: 0.8rem;
+      margin-bottom: 0.3rem;
+    }
   }
   
   .value {
@@ -345,6 +417,10 @@ const InfoItem = styled(motion.div)`
     font-weight: 600;
     color: ${props => props.theme.isDarkMode ? '#FFECB3' : '#FFB800'};
     transition: color 0.3s ease;
+    
+    @media (max-width: 425px) {
+      font-size: 1.1rem;
+    }
   }
 `;
 
@@ -356,6 +432,14 @@ const Info = styled(motion.div)`
 const TabContainer = styled.div`
   display: flex;
   margin-bottom: 2rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (max-width: 425px) {
+    margin-bottom: 1.2rem;
+  }
 `;
 
 const Button = styled(motion.button)`
@@ -370,6 +454,18 @@ const Button = styled(motion.button)`
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px ${props => props.theme.isDarkMode ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.05)'};
+  
+  @media (max-width: 768px) {
+    padding: 0.9rem 1.8rem;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: 425px) {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+    margin-right: 0.8rem;
+    border-radius: 8px;
+  }
   
   &.active {
     background: linear-gradient(to right, #FFB800, #FFA000);
@@ -390,6 +486,16 @@ const TabContent = styled.div`
   border-top: 3px solid #FFB800;
   position: relative;
   overflow: hidden;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+  
+  @media (max-width: 425px) {
+    padding: 1.2rem;
+    border-radius: 10px;
+    border-top-width: 2px;
+  }
   
   &::before {
     content: "";
@@ -431,6 +537,19 @@ const InstructionsList = styled.ol`
     padding-left: 3rem;
     transition: color 0.3s ease;
     
+    @media (max-width: 768px) {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+    
+    @media (max-width: 425px) {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      padding-left: 2.5rem;
+    }
+    
     &::before {
       content: counter(step-counter);
       counter-increment: step-counter;
@@ -447,6 +566,12 @@ const InstructionsList = styled.ol`
       left: 0;
       top: 0;
       font-size: 0.9rem;
+      
+      @media (max-width: 425px) {
+        width: 24px;
+        height: 24px;
+        font-size: 0.8rem;
+      }
     }
   }
 `;
@@ -462,6 +587,18 @@ const IngredientItem = styled(motion.li)`
   padding-left: 2rem;
   position: relative;
   
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  
+  @media (max-width: 425px) {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding-left: 1.8rem;
+    margin-bottom: 0.8rem;
+  }
+  
   &::before {
     content: "";
     position: absolute;
@@ -473,6 +610,12 @@ const IngredientItem = styled(motion.li)`
     background: #FFB800;
     border-radius: 50%;
     box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.2);
+    
+    @media (max-width: 425px) {
+      width: 10px;
+      height: 10px;
+      box-shadow: 0 0 0 2px rgba(255, 184, 0, 0.2);
+    }
   }
   
   .ingredient-name {

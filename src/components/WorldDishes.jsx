@@ -134,7 +134,7 @@ const WorldDishes = () => {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.6, 0.05, -0.01, 0.9]
+        ease: "easeOut"
       }
     }
   };
@@ -159,7 +159,7 @@ const WorldDishes = () => {
         {countries.map(country => (
           <CountryButton 
             key={country}
-            active={activeCountry === country}
+            $active={activeCountry === country}
             onClick={() => setActiveCountry(country)}
             whileHover={{ y: -5 }}
             whileTap={{ scale: 0.95 }}
@@ -276,7 +276,7 @@ const CountryFilter = styled.div`
 `;
 
 const CountryButton = styled(motion.button)`
-  background: ${props => props.active 
+  background: ${props => props.$active 
     ? props.theme.isDarkMode ? 'rgba(255, 184, 0, 0.2)' : 'rgba(255, 184, 0, 0.1)'
     : props.theme.isDarkMode ? '#2d2d2d' : 'white'
   };
@@ -284,8 +284,8 @@ const CountryButton = styled(motion.button)`
   padding: 0.8rem 1.5rem;
   border-radius: 50px;
   font-size: 1rem;
-  font-weight: ${props => props.active ? '600' : '500'};
-  color: ${props => props.active 
+  font-weight: ${props => props.$active ? '600' : '500'};
+  color: ${props => props.$active 
     ? '#FFB800' 
     : props.theme.isDarkMode ? '#ddd' : '#555'
   };
@@ -296,7 +296,7 @@ const CountryButton = styled(motion.button)`
   box-shadow: 0 4px 10px ${props => props.theme.isDarkMode ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.05)'};
   
   &:hover {
-    background: ${props => props.active 
+    background: ${props => props.$active 
       ? props.theme.isDarkMode ? 'rgba(255, 184, 0, 0.25)' : 'rgba(255, 184, 0, 0.15)'
       : props.theme.isDarkMode ? '#3d3d3d' : '#f5f5f5'
     };

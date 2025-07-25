@@ -123,6 +123,14 @@ const CategoryContainer = styled.div`
   margin: 2rem auto 4rem auto;
   padding: 0 1rem;
   position: relative;
+  
+  @media (max-width: 768px) {
+    margin: 1.5rem auto 3rem auto;
+  }
+  
+  @media (max-width: 425px) {
+    margin: 1rem auto 2.5rem auto;
+  }
 `;
 
 const CategoryHeading = styled(motion.div)`
@@ -133,6 +141,14 @@ const CategoryHeading = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   
+  @media (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
+  
+  @media (max-width: 425px) {
+    margin-bottom: 1.5rem;
+  }
+  
   h2 {
     margin-bottom: 0.8rem;
     font-weight: 600;
@@ -141,6 +157,15 @@ const CategoryHeading = styled(motion.div)`
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+    
+    @media (max-width: 768px) {
+      font-size: 1.8rem;
+    }
+    
+    @media (max-width: 425px) {
+      font-size: 1.6rem;
+      margin-bottom: 0.6rem;
+    }
   }
 `;
 
@@ -148,6 +173,10 @@ const HeadingUnderline = styled(motion.div)`
   height: 3px;
   background: linear-gradient(to right, #FFB800, #FFA000);
   border-radius: 4px;
+  
+  @media (max-width: 425px) {
+    height: 2px;
+  }
 `;
 
 const List = styled(motion.div)`
@@ -155,6 +184,14 @@ const List = styled(motion.div)`
   justify-content: center;
   flex-wrap: wrap;
   gap: 2rem;
+  
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 425px) {
+    gap: 1rem;
+  }
 `;
 
 const IconWrapper = styled(motion.div)`
@@ -179,6 +216,21 @@ const SLink = styled(motion(NavLink))`
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  
+  @media (max-width: 768px) {
+    width: 130px;
+    padding: 1.2rem 0;
+  }
+  
+  @media (max-width: 425px) {
+    width: 100px;
+    padding: 1rem 0;
+    border-radius: 8px;
+  }
+  
+  @media (max-width: 375px) {
+    width: 85px;
+  }
   
   &::before {
     content: "";
@@ -211,6 +263,22 @@ const SLink = styled(motion(NavLink))`
     position: relative;
     z-index: 1;
     
+    @media (max-width: 768px) {
+      width: 55px;
+      height: 55px;
+    }
+    
+    @media (max-width: 425px) {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 0.6rem;
+    }
+    
+    @media (max-width: 375px) {
+      width: 45px;
+      height: 45px;
+    }
+    
     &::after {
       content: "";
       position: absolute;
@@ -231,12 +299,32 @@ const SLink = styled(motion(NavLink))`
     transition: color 0.3s ease;
     position: relative;
     z-index: 1;
+    
+    @media (max-width: 425px) {
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 375px) {
+      font-size: 0.8rem;
+    }
   }
   
   svg {
     color: ${props => props.theme.isDarkMode ? '#ccc' : '#FF8F00'};
     font-size: 1.8rem;
     transition: all 0.3s ease;
+    
+    @media (max-width: 768px) {
+      font-size: 1.6rem;
+    }
+    
+    @media (max-width: 425px) {
+      font-size: 1.4rem;
+    }
+    
+    @media (max-width: 375px) {
+      font-size: 1.2rem;
+    }
   }
 
   &:hover {

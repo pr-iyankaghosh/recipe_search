@@ -241,11 +241,28 @@ const SectionWrapper = styled(motion.div)`
   margin: 4rem auto;
   padding: 0 1rem;
   position: relative;
+  
+  @media (max-width: 768px) {
+    margin: 3rem auto;
+  }
+  
+  @media (max-width: 425px) {
+    margin: 2.5rem auto;
+    padding: 0 0.5rem;
+  }
 `;
 
 const SectionHeader = styled(motion.div)`
   text-align: center;
   margin-bottom: 3rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
+  
+  @media (max-width: 425px) {
+    margin-bottom: 2rem;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -254,6 +271,14 @@ const SectionTitle = styled.h2`
   font-size: 2.2rem;
   display: inline-block;
   position: relative;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+  
+  @media (max-width: 425px) {
+    font-size: 1.8rem;
+  }
 `;
 
 const TitleHighlight = styled.span`
@@ -265,12 +290,24 @@ const TitleHighlight = styled.span`
   background: linear-gradient(to right, rgba(255, 184, 0, 0.3), rgba(255, 160, 0, 0.1));
   border-radius: 4px;
   z-index: -1;
+  
+  @media (max-width: 425px) {
+    height: 6px;
+  }
 `;
 
 const SectionDescription = styled.p`
   color: ${props => props.theme.isDarkMode ? '#ccc' : '#777'};
   font-size: 1.1rem;
   transition: color 0.3s ease;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 425px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const LoadingContainer = styled.div`
@@ -279,6 +316,10 @@ const LoadingContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 300px;
+  
+  @media (max-width: 425px) {
+    height: 250px;
+  }
 `;
 
 const LoadingSpinner = styled(motion.div)`
@@ -288,6 +329,12 @@ const LoadingSpinner = styled(motion.div)`
   border-top-color: #FFB800;
   border-radius: 50%;
   margin-bottom: 1rem;
+  
+  @media (max-width: 425px) {
+    width: 40px;
+    height: 40px;
+    border-width: 2px;
+  }
 `;
 
 const LoadingText = styled.p`
@@ -302,11 +349,19 @@ const NoResultsContainer = styled(motion.div)`
   justify-content: center;
   height: 300px;
   text-align: center;
+  
+  @media (max-width: 425px) {
+    height: 250px;
+  }
 `;
 
 const NoResultsIcon = styled.div`
   font-size: 3rem;
   margin-bottom: 1rem;
+  
+  @media (max-width: 425px) {
+    font-size: 2.5rem;
+  }
 `;
 
 const NoResultsText = styled.h3`
@@ -314,11 +369,19 @@ const NoResultsText = styled.h3`
   font-weight: 600;
   color: ${props => props.theme.isDarkMode ? '#f5f5f5' : '#333'};
   margin-bottom: 0.5rem;
+  
+  @media (max-width: 425px) {
+    font-size: 1.3rem;
+  }
 `;
 
 const NoResultsSubtext = styled.p`
   color: ${props => props.theme.isDarkMode ? '#ccc' : '#777'};
   font-size: 1rem;
+  
+  @media (max-width: 425px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const Card = styled(motion.div)`
@@ -330,6 +393,11 @@ const Card = styled(motion.div)`
   height: 100%;
   border-bottom: 3px solid #FFB800;
   
+  @media (max-width: 425px) {
+    border-radius: 12px;
+    border-bottom-width: 2px;
+  }
+  
   a {
     display: block;
     height: 100%;
@@ -340,6 +408,14 @@ const CardImage = styled.div`
   position: relative;
   height: 200px;
   overflow: hidden;
+  
+  @media (max-width: 768px) {
+    height: 180px;
+  }
+  
+  @media (max-width: 425px) {
+    height: 160px;
+  }
   
   img {
     width: 100%;
@@ -365,8 +441,18 @@ const RecipeTag = styled.span`
   font-weight: 500;
   z-index: 2;
   
+  @media (max-width: 425px) {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    border-radius: 15px;
+  }
+  
   &.gluten-free {
     top: 50px;
+    
+    @media (max-width: 425px) {
+      top: 40px;
+    }
   }
 `;
 
@@ -383,6 +469,12 @@ const RecipeTime = styled.div`
   align-items: center;
   gap: 0.3rem;
   z-index: 2;
+  
+  @media (max-width: 425px) {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    border-radius: 15px;
+  }
 `;
 
 const TimeIcon = styled.div`
@@ -408,6 +500,14 @@ const TimeIcon = styled.div`
 const CardContent = styled.div`
   padding: 1.5rem;
   
+  @media (max-width: 768px) {
+    padding: 1.2rem;
+  }
+  
+  @media (max-width: 425px) {
+    padding: 1rem;
+  }
+  
   h3 {
     font-size: 1.2rem;
     font-weight: 600;
@@ -419,6 +519,12 @@ const CardContent = styled.div`
     overflow: hidden;
     height: 3rem;
     transition: color 0.3s ease;
+    
+    @media (max-width: 425px) {
+      font-size: 1.1rem;
+      margin-bottom: 0.6rem;
+      height: 2.8rem;
+    }
   }
 `;
 
@@ -429,6 +535,11 @@ const CardMeta = styled.div`
   color: ${props => props.theme.isDarkMode ? '#aaa' : '#777'};
   transition: color 0.3s ease;
   margin-bottom: 1rem;
+  
+  @media (max-width: 425px) {
+    font-size: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
   
   span {
     margin-right: 0.5rem;
@@ -449,10 +560,19 @@ const ViewRecipeButton = styled.div`
   border-radius: 8px;
   transition: all 0.3s ease;
   
+  @media (max-width: 425px) {
+    padding: 0.7rem 0.9rem;
+    border-radius: 6px;
+  }
+  
   span {
     font-size: 0.9rem;
     font-weight: 500;
     color: ${props => props.theme.isDarkMode ? '#ddd' : '#555'};
+    
+    @media (max-width: 425px) {
+      font-size: 0.8rem;
+    }
   }
   
   ${Card}:hover & {
